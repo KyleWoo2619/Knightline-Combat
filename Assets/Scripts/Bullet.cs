@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
     private void DisableObject() //tell bullet game object to destroy itself
     {
         rb2d.velocity = Vector2.zero; //if past maxDistance
-        gameObject.SetActive(false); //status becomes false
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) //bullets destroy enemies
