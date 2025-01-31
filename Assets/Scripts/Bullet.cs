@@ -11,10 +11,17 @@ public class Bullet : MonoBehaviour
     private Vector2 startPosition; //bullet startig position
     private float conquaredDistance = 0; //if con.distance is greater than maxDistance, destroy game object
     private Rigidbody2D rb2d;
+    private ScoreManager scoreManager;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        scoreManager = FindObjectOfType<ScoreManager>();
+
+        if (scoreManager == null)
+        {
+            Debug.LogError("ScoreManager not found");
+        }
     }
 
     public void Initialize() //create bullet within scene
@@ -33,16 +40,26 @@ public class Bullet : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("Player Hit");
+            if (scoreManager != null) scoreManager.AddEnemyScore();
+        }
+        else if (collision.CompareTag("Enemy"))
+        {
+            Debug.Log("Enemy Hit");
+            if (scoreManager != null) scoreManager.AddPlayerScore();
+        }
+
+        DisableObject();
+    }
+
     private void DisableObject() //tell bullet game object to destroy itself
     {
         rb2d.velocity = Vector2.zero; //if past maxDistance
-        gameObject.SetActive(false); //status becomes false
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision) //bullets destroy enemies
-    {
-        Debug.Log("Collided" + collision.name);
-        DisableObject();
+        Destroy(gameObject); //Destroys the bullet
     }
 
 }
