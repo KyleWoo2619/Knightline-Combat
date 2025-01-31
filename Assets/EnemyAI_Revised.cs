@@ -1,85 +1,95 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
+using System.Collections;
 
-public class EnemyAI_Revised : MonoBehaviour
+public class EnemyControlle : MonoBehaviour
 {
+    [Header("References")]
+    public Transform player; // Assign the player in the Inspector
+    public Transform bulletSpawn; // Bullet spawn position
+    public GameObject bulletPrefab; // Bullet prefab
 
-    public Transform player; //getting the player location
-    public Transform bulletSpawn;//where cannon is shot from
-    public GameObject bulletPrefab;//bullet
-    public float movespeed; //enemy AI speed
-    public float shootingRate; //enemy shooting rate
-    private float rotationSpeed;
-    public bool canMove = true; //turret mode or tank mode
+    [Header("Movement Settings")]
+    public float moveSpeed = 2f; // AI movement speed
+    public bool canMove = true; // Toggle movement
 
-    private float currentSpeed = 0f;
-    private float acceleration = 2f;
-    private float deceleration = 5f;
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 300f; // Increased rotation speed for quick alignment
+    public float stopRotationThreshold = 2f; // Degrees within which AI considers itself aligned
+
+    [Header("Shooting Settings")]
+    public float minShootingRate = 1f;
+    public float maxShootingRate = 3f;
     private float nextShootTime = 0f;
-    private bool isRotating = false;
+
+    private bool isRotating = false; // Prevents movement while rotating
+
+    void Start()
+    {
+        StartCoroutine(AI_BehaviorLoop());
+    }
+
+    IEnumerator AI_BehaviorLoop()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(RotateTowardPlayer()); // Stop and rotate first
+            if (canMove) yield return StartCoroutine(MoveForward()); // Then move if allowed
+        }
+    }
+
+    IEnumerator RotateTowardPlayer()
+    {
+        isRotating = true; // Stop movement while rotating
+
+        while (true)
+        {
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            float targetAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+
+            // Adjust for Unity's 2D forward being +Y
+            targetAngle -= 90f;
+
+            // Smoothly rotate towards the target angle
+            float currentAngle = transform.eulerAngles.z;
+            float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 0, newAngle);
+
+            // Stop rotating if close enough to the correct angle
+            if (Mathf.Abs(Mathf.DeltaAngle(currentAngle, targetAngle)) < stopRotationThreshold)
+                break;
+
+            yield return null; // Continue rotating
+        }
+
+        isRotating = false; // Allow movement again
+    }
+
+    IEnumerator MoveForward()
+    {
+        while (!isRotating) // Move only if not rotating
+        {
+            transform.position += transform.up * moveSpeed * Time.deltaTime;
+            yield return null; // Keep moving smoothly
+        }
+    }
 
     void Update()
     {
         Shooting();
-        Rotation();
-        Movement();
-
-    }
-    void Movement()
-    {
-        if (canMove)
-        {
-            //locating the player
-            Vector3 direction = player.position - transform.position;
-
-            //consistent movement to the player
-            direction.Normalize();
-
-            if (currentSpeed < movespeed)
-            {
-                currentSpeed += acceleration * Time.deltaTime;
-                currentSpeed = Mathf.Clamp(currentSpeed, 0, movespeed);
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, player.position, movespeed);
-
-            isRotating = false;
-        }
-
-        else
-        {
-            currentSpeed = Mathf.Lerp(currentSpeed, 0f, deceleration * Time.deltaTime);
-
-            isRotating = true;
-        }
-    }
-
-    void Rotation()
-    {
-        if (isRotating && !canMove)
-        {
-            Vector3 direction = player.position - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
     }
 
     void Shooting()
     {
-
         if (Time.time >= nextShootTime)
         {
             ShootBullet();
-            nextShootTime = Time.time; + shootingRate;
+            nextShootTime = Time.time + Random.Range(minShootingRate, maxShootingRate);
         }
     }
 
     void ShootBullet()
     {
-
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation); //create the bullet prefab in the scene
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
         bullet.GetComponent<Bullet>().Initialize();
     }
 }

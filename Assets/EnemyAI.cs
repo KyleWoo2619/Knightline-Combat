@@ -1,42 +1,68 @@
-using UnityEngine;
-using System.Collections; // Required for IEnumerator
+﻿using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform player; // Assign the player in the Inspector
-    public float moveInterval = 1f; // Time between moves
-    public float tileSize = 1f; // Tile size for movement
-    private Vector2 currentDirection = Vector2.up; // Default direction
-    private bool canMove = true;
+    [Header("References")]
+    public Transform player;
+    public Transform bulletSpawn;
+    public GameObject bulletPrefab;
 
-    void Start()
+    [Header("Movement Settings")]
+    public float moveSpeed = 1f;
+    public bool canMove = true; // turret or tank mode
+
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 90f; // degrees per second
+    public float rotationDelay = 0.5f; 
+    private float nextRotationTime = 0f; // time tracker for delayed rotation
+
+    [Header("Shooting Settings")]
+    public float minShootingRate = 1f;
+    public float maxShootingRate = 3f;
+    private float nextShootTime = 0f;
+    
+
+    void Update()
     {
-        StartCoroutine(MoveTowardPlayer());
+        RotateTowardPlayer();
+        if (canMove) MoveForward();
+        Shooting();
     }
 
-    IEnumerator MoveTowardPlayer()
+    void RotateTowardPlayer()
     {
-        while (true)
+        if (Time.time < nextRotationTime) return; // making rotation slightly slower when catching up to player's location
+
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        float targetAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+
+        targetAngle -= 90f; // making sure enemy looks to the left - if enemy is placed on left side, change this to -90
+
+        float currentAngle = transform.eulerAngles.z;
+        float newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0, 0, newAngle);
+
+        // adding next rotation delay
+        nextRotationTime = Time.time + rotationDelay;
+    }
+
+    void MoveForward()
+    {
+        transform.position += transform.up * moveSpeed * Time.deltaTime; // ai can only move forward or rotate
+    }
+
+    void Shooting()
+    {
+        if (Time.time >= nextShootTime)
         {
-            if (canMove)
-            {
-                // Determine direction toward the player
-                Vector3 directionToPlayer = (player.position - transform.position).normalized;
-                float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-
-                // Snap to closest 45-degree direction
-                float snappedAngle = Mathf.Round(angleToPlayer / 45f) * 45f;
-                currentDirection = new Vector2(Mathf.Cos(snappedAngle * Mathf.Deg2Rad), Mathf.Sin(snappedAngle * Mathf.Deg2Rad));
-
-                // Rotate the enemy
-                transform.rotation = Quaternion.Euler(0, 0, snappedAngle);
-
-                // Move slightly toward the player
-                Vector3 targetPosition = transform.position + (Vector3)currentDirection * tileSize;
-                transform.position = targetPosition;
-
-                yield return new WaitForSeconds(moveInterval);
-            }
+            ShootBullet();
+            nextShootTime = Time.time + Random.Range(minShootingRate, maxShootingRate);
         }
+    }
+
+    void ShootBullet()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+        bullet.GetComponent<Bullet>().Initialize();
     }
 }
