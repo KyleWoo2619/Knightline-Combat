@@ -1017,7 +1017,7 @@ MonoBehaviour:
   moveSpeed: 1
   canMove: 1
   rotationSpeed: 180
-  rotationDelay: 0.5
+  rotationDelay: 0.2
   minShootingRate: 1
   maxShootingRate: 3
 --- !u!50 &801041086
