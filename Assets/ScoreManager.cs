@@ -31,12 +31,12 @@ public class ScoreManager : MonoBehaviour
     {
         if (playerScoreTMP != null)
         {
-            playerScoreTMP.text = "Player Score: " + playerScore;
+            playerScoreTMP.text = "Player: " + playerScore;
         }
 
         if (enemyScoreTMP != null)
         {
-            enemyScoreTMP.text = "Enemy Score: " + enemyScore;
+            enemyScoreTMP.text = "Enemy: " + enemyScore;
         }
     }
 }
