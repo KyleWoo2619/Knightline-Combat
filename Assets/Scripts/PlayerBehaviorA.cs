@@ -23,7 +23,7 @@ public class PlayerBehaviorA : MonoBehaviour
             mainCamera = Camera.main;
             shielded = false;
     }
-    void Start()
+    void Start() //tells game to start with the shield gameobject toggled off
     {
         shielded = false;
     }
@@ -37,7 +37,7 @@ public class PlayerBehaviorA : MonoBehaviour
         CheckShield();
     }
 
-    private void GetShootingInput() //player shoots bullets with spacebar
+    private void GetShootingInput() //player shoots bullets with left click (spacebar)
     {
         if (Input.GetMouseButtonDown(0))//Input.GetKey(KeyCode.Space))
         {
@@ -65,18 +65,18 @@ public class PlayerBehaviorA : MonoBehaviour
         OnMoveBody?.Invoke(movementVector.normalized);
     }
 
-    void CheckShield()
+    void CheckShield() //tells the game to check for shield status, and is toggled on with 'E'
     {
         if (Input.GetKey(KeyCode.E)&&!shielded)
         {
             shield.SetActive(true);
             shielded = true;
             //code for turning off shield
-            Invoke("NoShield", 3f);
+            Invoke("NoShield", 3f); //turns the shield off after 3 seconds
         }
     }
 
-    void NoShield() 
+    void NoShield()
     {
         shield.SetActive(false);
         shielded = false;
