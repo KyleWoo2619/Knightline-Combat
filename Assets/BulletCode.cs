@@ -23,6 +23,7 @@ public class BulletBehavior : MonoBehaviour
         transform.position = player.position;
 
         gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame

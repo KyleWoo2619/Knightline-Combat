@@ -15,17 +15,15 @@ public class PlayerBehaviorA : MonoBehaviour
     public UnityEvent<Vector2> OnMoveBody = new UnityEvent<Vector2>();
     public UnityEvent<Vector2> OnMoveTurret = new UnityEvent<Vector2>();
     private bool shielded;
-    
+
+    public bool IsShielded => shielded;
 
     private void Awake() //tells game which camera to reffer to in reference to the player
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
             shielded = false;
-    }
-    void Start() //tells game to start with the shield gameobject toggled off
-    {
-        shielded = false;
+            shield.SetActive(false); //tells game to start with the shield gameobject toggled off
     }
 
     // Update is called once per frame
@@ -34,7 +32,6 @@ public class PlayerBehaviorA : MonoBehaviour
         GetBodyMovement();
         GetTurretMovement();
         GetShootingInput();
-        CheckShield();
     }
 
     private void GetShootingInput() //player shoots bullets with left click (spacebar)
@@ -65,18 +62,27 @@ public class PlayerBehaviorA : MonoBehaviour
         OnMoveBody?.Invoke(movementVector.normalized);
     }
 
-    void CheckShield() //tells the game to check for shield status, and is toggled on with 'E'
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Input.GetKey(KeyCode.E)&&!shielded)
+        Debug.Log("Collided with: " + collision.gameObject.name); //debug to check ad see if shield is activating
+        if (collision.CompareTag("ShieldPickup") && !shielded)
         {
-            shield.SetActive(true);
-            shielded = true;
-            //code for turning off shield
-            Invoke("NoShield", 3f); //turns the shield off after 3 seconds
+            Debug.Log("Shield Activated!");
+            ActivateShield();
+            Destroy(collision.gameObject);
+        }
+        else if ((collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet")) && shielded)
+        {
+            DeactivateShield();
         }
     }
+    void ActivateShield()
+    {
+        shield.SetActive(true);
+        shielded = true;
+    }
 
-    void NoShield()
+    void DeactivateShield()
     {
         shield.SetActive(false);
         shielded = false;

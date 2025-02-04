@@ -57,11 +57,17 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            PlayerBehaviorA player = collision.GetComponent<PlayerBehaviorA>();
+            if (player != null && !player.IsShielded)
+            {
+                scoreManager?.AddEnemyScore();
+                hitPlayerSound?.Play(); // Play hit sound for Player
+            }
             Debug.Log("Player Hit");
-            scoreManager?.AddEnemyScore();
+            //scoreManager?.AddEnemyScore();
 
             // Play hit sound for Player
-            hitPlayerSound?.Play();
+            //hitPlayerSound?.Play();
         }
         else if (collision.CompareTag("Enemy"))
         {
