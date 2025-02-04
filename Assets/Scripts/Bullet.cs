@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10; 
-    public int damage = 5;
-    public float maxDistance = 1; //max distance it will trave before destroyig itself
+    public float speed = 10;
+    public float maxDistance = 10; // Max distance before destroying itself
 
-    private Vector2 startPosition; //bullet startig position
-    private float conquaredDistance = 0; //if con.distance is greater than maxDistance, destroy game object
+    private Vector2 startPosition;
+    private float conqueredDistance = 0;
     private Rigidbody2D rb2d;
     private ScoreManager scoreManager;
+
+    // Audio Sources (Auto-detected)
+    private AudioSource bulletSpawnSound;
+    private AudioSource hitPlayerSound;
+    private AudioSource hitEnemySound;
+    private AudioSource hitWallSound;
 
     private void Awake()
     {
@@ -22,22 +27,30 @@ public class Bullet : MonoBehaviour
         {
             Debug.LogError("ScoreManager not found");
         }
+
+        // **Automatically Find Sounds in Scene**
+        bulletSpawnSound = GameObject.Find("BulletSound")?.GetComponent<AudioSource>();
+        hitPlayerSound = GameObject.Find("PlayerHit")?.GetComponent<AudioSource>();
+        hitEnemySound = GameObject.Find("EnemyHit")?.GetComponent<AudioSource>();
+        hitWallSound = GameObject.Find("WallHit")?.GetComponent<AudioSource>();
     }
 
-    public void Initialize() //create bullet within scene
+    public void Initialize() // Create bullet within scene
     {
         startPosition = transform.position;
         rb2d.velocity = transform.up * speed;
+
+        // Play bullet spawn sound if found
+        bulletSpawnSound?.Play();
     }
 
     private void Update()
     {
-        conquaredDistance = Vector2.Distance(transform.position, startPosition); //calculate the travelled distance by bullet
-        if (conquaredDistance > maxDistance) //check if travelled distance is greater than maxDisance
+        conqueredDistance = Vector2.Distance(transform.position, startPosition);
+        if (conqueredDistance > maxDistance)
         {
-            DisableObject(); //if so, destroy bullet
+            DisableObject();
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,21 +58,31 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Player Hit");
-            if (scoreManager != null) scoreManager.AddEnemyScore();
+            scoreManager?.AddEnemyScore();
+
+            // Play hit sound for Player
+            hitPlayerSound?.Play();
         }
         else if (collision.CompareTag("Enemy"))
         {
             Debug.Log("Enemy Hit");
-            if (scoreManager != null) scoreManager.AddPlayerScore();
+            scoreManager?.AddPlayerScore();
+
+            // Play hit sound for Enemy
+            hitEnemySound?.Play();
+        }
+        else
+        {
+            // Play hit sound for walls/other objects
+            hitWallSound?.Play();
         }
 
         DisableObject();
     }
 
-    private void DisableObject() //tell bullet game object to destroy itself
+    private void DisableObject()
     {
-        rb2d.velocity = Vector2.zero; //if past maxDistance
-        Destroy(gameObject); //Destroys the bullet
+        rb2d.velocity = Vector2.zero;
+        Destroy(gameObject);
     }
-
 }
