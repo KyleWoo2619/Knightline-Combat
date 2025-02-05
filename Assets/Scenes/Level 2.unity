@@ -232,7 +232,7 @@ Transform:
   m_GameObject: {fileID: 67870608}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: 3.7090337, y: 2.2549248, z: 0.05027173}
+  m_LocalPosition: {x: 3.7090337, y: 1.71, z: 0.05027173}
   m_LocalScale: {x: 0.17316857, y: 0.17316857, z: 0.17316855}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -749,7 +749,7 @@ Transform:
   m_GameObject: {fileID: 199763307}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.92387956, w: 0.38268343}
-  m_LocalPosition: {x: -4.585966, y: -3.965075, z: 0.05027173}
+  m_LocalPosition: {x: -4.61, y: -3.61, z: 0.05027173}
   m_LocalScale: {x: 0.17316855, y: 0.17316855, z: 0.17316855}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1753,6 +1753,9 @@ MonoBehaviour:
   enemyScore: 0
   playerScoreTMP: {fileID: 1399804218}
   enemyScoreTMP: {fileID: 564228219}
+  winPanel: {fileID: 0}
+  backgroundMusic: {fileID: 0}
+  winSound: {fileID: 0}
 --- !u!4 &517958055
 Transform:
   m_ObjectHideFlags: 0
@@ -2080,7 +2083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cffb079fb3aa5b498f881e495492eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 60
+  gameDuration: 45
   timerText: {fileID: 527702338}
   winPanel: {fileID: 909860902}
   losePanel: {fileID: 481554794}
@@ -3098,7 +3101,7 @@ Transform:
   m_GameObject: {fileID: 913418715}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.9238796, w: -0.38268325}
-  m_LocalPosition: {x: 3.7840335, y: -3.965075, z: 0.05027173}
+  m_LocalPosition: {x: 3.7599995, y: -3.6099997, z: 0.05027173}
   m_LocalScale: {x: 0.17316857, y: 0.17316857, z: 0.17316855}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5508,7 +5511,7 @@ Transform:
   m_GameObject: {fileID: 1367605002}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -4.585966, y: 2.2549248, z: 0.05027173}
+  m_LocalPosition: {x: -4.585966, y: 1.71, z: 0.05027173}
   m_LocalScale: {x: 0.17316857, y: 0.17316857, z: 0.17316855}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6267,12 +6270,12 @@ MonoBehaviour:
   player: {fileID: 1014618450}
   bulletSpawn: {fileID: 21986636}
   bulletPrefab: {fileID: 1936871820107907475, guid: b48244c4709195a41bc4b650d32642af, type: 3}
-  moveSpeed: 0.3
+  moveSpeed: 0.6
   canMove: 1
   distanceBetween: 50
   rotationSpeed: 90
   minShootingRate: 1
-  maxShootingRate: 4
+  maxShootingRate: 2.5
   wallCheckDistance: 1
   wallLayer:
     serializedVersion: 2
