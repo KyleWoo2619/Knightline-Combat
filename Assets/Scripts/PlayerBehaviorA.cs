@@ -24,7 +24,7 @@ public class PlayerBehaviorA : MonoBehaviour
         if (mainCamera == null)
             mainCamera = Camera.main;
             shielded = false;
-            shield.SetActive(false); //tells game to start with the shield gameobject toggled off
+            //shield.SetActive(false); //tells game to start with the shield gameobject toggled off
     }
 
     // Update is called once per frame
