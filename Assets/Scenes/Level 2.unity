@@ -6112,9 +6112,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1575383900}
   - component: {fileID: 1575383904}
-  - component: {fileID: 1575383903}
   - component: {fileID: 1575383902}
   - component: {fileID: 1575383901}
+  - component: {fileID: 1575383905}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -6200,27 +6200,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &1575383903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1575383899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f287384c47fc26f49ac1b57b926fb22a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1014618450}
-  bulletSpawn: {fileID: 21986636}
-  bulletPrefab: {fileID: 1936871820107907475, guid: b48244c4709195a41bc4b650d32642af, type: 3}
-  moveSpeed: 1
-  canMove: 1
-  rotationSpeed: 300
-  rotationDelay: 0.2
-  minShootingRate: 1
-  maxShootingRate: 3
 --- !u!212 &1575383904
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6273,6 +6252,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1575383905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575383899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03ab30419fd6364d8f7730616302777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1014618450}
+  bulletSpawn: {fileID: 21986636}
+  bulletPrefab: {fileID: 1936871820107907475, guid: b48244c4709195a41bc4b650d32642af, type: 3}
+  moveSpeed: 0.3
+  canMove: 1
+  distanceBetween: 50
+  rotationSpeed: 90
+  minShootingRate: 1
+  maxShootingRate: 4
+  wallCheckDistance: 1
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  avoidanceForce: 3
 --- !u!1 &1719188354
 GameObject:
   m_ObjectHideFlags: 0
@@ -6352,9 +6357,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d7171e0e2d68f2244a0a520bcd8e227f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -1903,9 +1903,9 @@ GameObject:
   m_Component:
   - component: {fileID: 801041084}
   - component: {fileID: 801041083}
-  - component: {fileID: 801041085}
   - component: {fileID: 801041086}
   - component: {fileID: 801041087}
+  - component: {fileID: 801041088}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -1981,27 +1981,6 @@ Transform:
   - {fileID: 1579384328}
   m_Father: {fileID: 294431159}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &801041085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801041081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f287384c47fc26f49ac1b57b926fb22a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1561158962}
-  bulletSpawn: {fileID: 1144091390}
-  bulletPrefab: {fileID: 1936871820107907475, guid: b48244c4709195a41bc4b650d32642af, type: 3}
-  moveSpeed: 1
-  canMove: 1
-  rotationSpeed: 500
-  rotationDelay: 0.2
-  minShootingRate: 3
-  maxShootingRate: 5
 --- !u!50 &801041086
 Rigidbody2D:
   serializedVersion: 4
@@ -2064,6 +2043,32 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 6.4000015, y: 6.4200015}
   m_Direction: 0
+--- !u!114 &801041088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801041081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03ab30419fd6364d8f7730616302777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1561158962}
+  bulletSpawn: {fileID: 1144091390}
+  bulletPrefab: {fileID: 1936871820107907475, guid: b48244c4709195a41bc4b650d32642af, type: 3}
+  moveSpeed: 0.4
+  canMove: 1
+  distanceBetween: 50
+  rotationSpeed: 30
+  minShootingRate: 3
+  maxShootingRate: 4
+  wallCheckDistance: 1
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  avoidanceForce: 2
 --- !u!1 &835696054
 GameObject:
   m_ObjectHideFlags: 0
@@ -3208,7 +3213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cffb079fb3aa5b498f881e495492eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 60
+  gameDuration: 10
   timerText: {fileID: 1119465948}
   winPanel: {fileID: 479884409}
   losePanel: {fileID: 1313806211}
@@ -3860,11 +3865,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d7171e0e2d68f2244a0a520bcd8e227f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -6942,7 +6947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2094960444
 RectTransform:
   m_ObjectHideFlags: 0
