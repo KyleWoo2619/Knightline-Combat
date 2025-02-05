@@ -63,11 +63,15 @@ public class Bullet : MonoBehaviour
                 scoreManager?.AddEnemyScore();
                 hitPlayerSound?.Play(); // Play hit sound for Player
             }
-            Debug.Log("Player Hit");
-            //scoreManager?.AddEnemyScore();
+            else
+            {
+                Debug.Log("Player Hit");
+                scoreManager?.AddEnemyScore();
 
-            // Play hit sound for Player
-            //hitPlayerSound?.Play();
+                // Play hit sound for Player
+                hitPlayerSound?.Play();
+            }
+          
         }
         else if (collision.CompareTag("Enemy"))
         {

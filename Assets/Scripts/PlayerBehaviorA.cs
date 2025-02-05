@@ -10,6 +10,7 @@ public class PlayerBehaviorA : MonoBehaviour
     private Camera mainCamera;
     [SerializeField]
     private GameObject shield;
+    public GameObject ShieldPickup;
 
     public UnityEvent OnShoot = new UnityEvent(); //allows us to assign three different events to the player game asset
     public UnityEvent<Vector2> OnMoveBody = new UnityEvent<Vector2>();
@@ -62,9 +63,9 @@ public class PlayerBehaviorA : MonoBehaviour
         OnMoveBody?.Invoke(movementVector.normalized);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collided with: " + collision.gameObject.name); //debug to check ad see if shield is activating
+        Debug.Log("Collided with: ShieldPickup" + collision.gameObject.tag); //debug to check and see if shield is activating
         if (collision.CompareTag("ShieldPickup") && !shielded)
         {
             Debug.Log("Shield Activated!");
@@ -86,6 +87,6 @@ public class PlayerBehaviorA : MonoBehaviour
     {
         shield.SetActive(false);
         shielded = false;
-    }
+    }*/
 
 }
