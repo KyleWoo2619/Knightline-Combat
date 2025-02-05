@@ -8,9 +8,13 @@ public class ScoreManager : MonoBehaviour
     public int playerScore = 0; // player score
     public int enemyScore = 0; // enemy score
 
-    [Header("Player ")]
     public TMP_Text playerScoreTMP; // put player score here
     public TMP_Text enemyScoreTMP; // put enemy score here
+
+    public GameObject winPanel;
+    public AudioSource backgroundMusic;
+    public AudioSource winSound;
+
 
     // increase player score
     public void AddPlayerScore()
@@ -39,4 +43,14 @@ public class ScoreManager : MonoBehaviour
             enemyScoreTMP.text = "Enemy: " + enemyScore;
         }
     }
+    public void WinGame()
+    {
+        Debug.Log("Boss Defeated! You Win!");
+        // Activate Win UI (if you have one)
+        winPanel.SetActive(true);
+        winSound.Play();
+        backgroundMusic.Stop();
+        Time.timeScale = 0; // Pause game
+    }
+
 }
